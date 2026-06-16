@@ -94,6 +94,8 @@ blockquote{font-family:var(--font-serif);font-style:italic;font-size:clamp(1.5re
 .toc-themes li{display:flex;align-items:baseline;gap:.8em;padding:.46em .2em;border-bottom:1px dashed var(--color-line);font-size:clamp(1.15rem,1.75vw,1.6rem);line-height:1.4}
 .toc-themes .tn{font-family:var(--font-serif);font-weight:900;color:var(--color-accent);font-size:1.3em;flex:none;min-width:1.5em;text-align:center}
 .toc-themes b{color:var(--color-primary)}
+.numlist{margin:0;padding-left:1.5em;font-size:clamp(1.12rem,1.65vw,1.52rem);line-height:1.45}
+.numlist li{padding:.34em 0;border-bottom:1px dashed var(--color-line)}
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6vw;width:100%}
 .card{background:#fff;padding:1.3em 1.4em;border-radius:14px;box-shadow:var(--shadow-soft);border-top:4px solid var(--color-accent)}
 .card h3{margin-top:0;color:var(--color-primary)}
@@ -429,40 +431,69 @@ body.no-clickzones .click-zones{display:none}
   <p class="when">先從人們對「美好人生」的素樸想像說起——再一起追問：這些，是終極關懷嗎？</p>
 </section>
 
-<!-- 從夢想說起：真實清單 -->
+<!-- 從夢想說起：臺大學生＋美國統計 -->
 <section class="slide" style="--jc:flex-start;padding-top:5vh">
   <h2>從人們的夢想與美好人生想像說起</h2>
-  <p class="lead" style="max-width:none">無論是臺大新生、美國大一新生，還是中學老師，被問到「夢想」與「美好人生」時，答案其實出奇地相近。</p>
+  <p class="lead" style="max-width:none">先看兩份真實調查：臺大學生與美國大一新生，被問到「人生夢想」時，最想要的是什麼？</p>
   <div class="grid2" style="margin-top:.7em;align-items:start;gap:2.4vw">
     <figure style="margin:0;text-align:center">
-      <img src="images/dreamlist_us_freshman.jpg" alt="美國大一新生調查" style="width:100%;max-height:48vh;object-fit:contain;border-radius:8px;box-shadow:var(--shadow-soft)">
-      <figcaption class="src" style="margin-top:.4em">美國 CIRP 大一新生調查</figcaption>
+      <img src="images/dreamlist_ntu_students.jpg" alt="臺大學生夢想調查" style="width:100%;max-height:50vh;object-fit:contain;border-radius:8px;box-shadow:var(--shadow-soft)">
+      <figcaption class="src" style="margin-top:.4em">臺大學生人生夢想調查</figcaption>
     </figure>
     <figure style="margin:0;text-align:center">
-      <img src="images/dreamlist_teachers.jpg" alt="教師夢想清單" style="width:100%;max-height:48vh;object-fit:contain;border-radius:8px;box-shadow:var(--shadow-soft)">
-      <figcaption class="src" style="margin-top:.4em">跨校生命教育教師社群的夢想清單</figcaption>
+      <img src="images/dreamlist_us_freshman.jpg" alt="美國大一新生調查" style="width:100%;max-height:50vh;object-fit:contain;border-radius:8px;box-shadow:var(--shadow-soft)">
+      <figcaption class="src" style="margin-top:.4em">美國 CIRP 大一新生調查</figcaption>
     </figure>
   </div>
 </section>
 
-<!-- 夢想清單：老師 vs 學生 -->
+<!-- 臺大學生 vs 美國大一新生：同異 -->
 <section class="slide" style="--jc:flex-start;padding-top:5.5vh">
-  <h2>夢想清單：老師 vs 學生</h2>
+  <h2>臺大學生 vs 美國大一新生：同與異</h2>
   <div class="grid2" style="margin-top:.8em;align-items:start;gap:3vw">
     <div>
-      <h3 style="font-size:clamp(1.5rem,2.4vw,2.1rem);color:var(--color-primary);margin-bottom:.3em">學生</h3>
-      <p style="font-size:clamp(1.15rem,1.7vw,1.55rem);line-height:1.7">大部分夢想與自身的<b>學業、事業、家庭</b>相關；部分則與<b>人生意義與目的的探索</b>、對處在困難中的人的幫助相關。</p>
+      <h3 style="font-size:clamp(1.5rem,2.3vw,2rem);color:var(--color-primary);margin-bottom:.35em">相同之處</h3>
+      <ul class="fl">
+        <li>都重視<b>家庭與成家</b>、<b>真摯的友誼</b></li>
+        <li>都有不少人把<b>「人生的意義」</b>列為重要</li>
+        <li>都關心<b>幫助他人、利他</b></li>
+      </ul>
     </div>
     <div>
-      <h3 style="font-size:clamp(1.5rem,2.4vw,2.1rem);color:var(--color-primary);margin-bottom:.3em">老師</h3>
+      <h3 style="font-size:clamp(1.5rem,2.3vw,2rem);color:var(--color-primary);margin-bottom:.35em">不同之處</h3>
       <ul class="fl">
-        <li>享有快樂無憂的退休生活與健康老年</li>
-        <li>兒女升學順利、就業穩定、家庭幸福</li>
-        <li><b>擁有安頓生命的終極信念或宗教信仰</b></li>
-        <li>無病無痛，在睡夢中壽終正寢</li>
-        <li>以學術專業，帶動社會進步、發揮影響力</li>
-        <li>能陪伴照顧父母安度晚年</li>
+        <li>臺大學生把<b>「找到人生的意義、目的、價值」</b>放在第一（票數遙遙領先）</li>
+        <li>美國新生則以<b>「經濟富足」</b>名列前茅，物質取向相對明顯</li>
       </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 人生夢想清單：臺大學生 vs 臺大教師（列表） -->
+<section class="slide" style="--jc:flex-start;padding-top:4.5vh">
+  <h2>人生夢想清單：臺大學生 vs 臺大教師</h2>
+  <div class="grid2" style="margin-top:.7em;align-items:start;gap:2.4vw">
+    <div>
+      <div style="background:#2E9BD6;color:#fff;font-family:var(--font-serif);font-weight:900;font-size:clamp(1.5rem,2.3vw,2rem);text-align:center;padding:.18em 0;border-radius:8px;margin-bottom:.5em">學生版</div>
+      <ol class="numlist">
+        <li>找到人生的意義、目的、價值</li>
+        <li>結交五位終身的知心好友</li>
+        <li>畢業後能進入起薪百萬的跨國企業工作</li>
+        <li>成功申請交換學生，至國外留學生活一年</li>
+        <li>與家人感情融洽，無話不談</li>
+        <li>遇到天菜，與他／她有一段穩定的感情發展</li>
+      </ol>
+    </div>
+    <div>
+      <div style="background:#E8920F;color:#fff;font-family:var(--font-serif);font-weight:900;font-size:clamp(1.5rem,2.3vw,2rem);text-align:center;padding:.18em 0;border-radius:8px;margin-bottom:.5em">教師版</div>
+      <ol class="numlist">
+        <li>享有健康快樂無憂的退休生活與健康老年</li>
+        <li>兒女升學順利、就業穩定、家庭幸福</li>
+        <li>無病無痛，在睡夢中壽終正寢</li>
+        <li><b>擁有安頓生命的宗教信仰或終極信念</b></li>
+        <li>能夠陪伴照顧父母安度晚年</li>
+        <li>結交五位終身可靠的好朋友</li>
+      </ol>
     </div>
   </div>
 </section>
