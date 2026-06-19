@@ -90,6 +90,11 @@ blockquote{font-family:var(--font-serif);font-style:italic;font-size:clamp(1.5re
 .kv-slide.revealed .kv-hint{opacity:0;visibility:hidden}
 .kv-slide.active:not(.revealed) .kv-door img{animation:kvDoorIn .9s ease both}
 @keyframes kvDoorIn{from{opacity:0;transform:scale(.86)}to{opacity:1;transform:scale(1)}}
+/* 通用建構式揭示：reveal-step 內的 .reveal-after 先隱藏，按鍵／點擊後淡入；.reveal-hint 揭曉後消失 */
+.reveal-after{transition:opacity .55s ease,transform .55s ease}
+.reveal-hint{transition:opacity .4s ease}
+.reveal-step:not(.revealed) .reveal-after{opacity:0;transform:translateY(10px);pointer-events:none}
+.reveal-step.revealed .reveal-hint{opacity:0;visibility:hidden}
 /* 各主題標題頁（本日章節總覽） */
 .toc-themes{list-style:none;max-width:none;width:100%;margin:.5em 0 0;padding:0}
 .toc-themes li{display:flex;align-items:baseline;gap:.8em;padding:.46em .2em;border-bottom:1px dashed var(--color-line);font-size:clamp(1.15rem,1.75vw,1.6rem);line-height:1.4}
@@ -1135,16 +1140,25 @@ body.no-clickzones .click-zones{display:none}
   </div>
 </section>
 
-<!-- 人生畢業禮 -->
-<section class="slide roomy">
+<!-- 人生畢業禮（建構式：先討論，按鍵後揭曉收束） -->
+<section class="slide roomy reveal-step">
   <h2>體驗活動：人生畢業禮</h2>
   <div class="practice" style="max-width:62rem">
     <span class="label">書寫＋互讀</span>
     <p>想像自己 90 歲安詳離世——希望最親近的人，怎麼描述你是什麼樣的人？<b>你最希望被記得的三件事</b>是什麼？</p>
+    <div style="margin:.15em 0 .25em;font-size:clamp(1.08rem,1.5vw,1.46rem);line-height:1.95;color:var(--color-primary)">
+      我最希望被記得的三件事——<br>
+      ①　　________________________<br>
+      ②　　________________________<br>
+      ③　　________________________
+    </div>
     <p>4 人一組互讀（只讀「希望被記得的三件事」）。然後以終為始反推：<b>既然希望被這樣記得，現在的人生該怎麼走？</b></p>
   </div>
-  <p class="big-q" style="margin-top:.4em">你會發現——被記得的幾乎都是<b>愛與關係</b>，而不是財富與享樂。</p>
-  <p class="muted">被記得的，幾乎都是面向 ①② 的內容；而「想像自己的離世」也已悄悄把我們帶進下一個面向——<b>當人生以死亡為參照，什麼才真正值得？</b></p>
+  <p class="reveal-hint muted" style="margin-top:.5em">（小組討論後，按 → 揭曉）</p>
+  <div class="reveal-after">
+    <p class="big-q" style="margin-top:.3em">你會發現——被記得的幾乎都是<b>愛與關係</b>，而不是財富與享樂。</p>
+    <p class="muted">被記得的，幾乎都是面向 ①② 的內容；而「想像自己的離世」也已悄悄把我們帶進下一個面向——<b>當人生以死亡為參照，什麼才真正值得？</b></p>
+  </div>
 </section>
 
 <!-- 面向三：經得起無常與死亡（破題） -->
@@ -1487,7 +1501,7 @@ body.no-clickzones .click-zones{display:none}
 
 <div class="click-zones" id="clickZones">
   <div class="click-zone" onclick="prevSlide()" title="前一頁"></div>
-  <div class="click-zone" onclick="nextSlide()" title="下一頁"></div>
+  <div class="click-zone" onclick="if(!revealStep())nextSlide()" title="下一頁"></div>
 </div>
 <div class="progress-bar" id="progress"></div>
 <div class="page-indicator"><span id="curr">1</span> / <span id="total">1</span></div>
@@ -1540,7 +1554,7 @@ slides.forEach((s,i)=>{if(s.querySelector('.cloud-canvas-wrap canvas'))CLOUD_SLI
 function showSlide(n){
   if(n<1)n=1;if(n>total)n=total;
   slides.forEach((s,i)=>{s.classList.remove('active','prev');if(i+1===n)s.classList.add('active');else if(i+1<n)s.classList.add('prev');});
-  slides.forEach(s=>{if(s.classList.contains('kv-slide'))s.classList.remove('revealed');});
+  slides.forEach(s=>{if(s.classList.contains('kv-slide')||s.classList.contains('reveal-step'))s.classList.remove('revealed');});
   current=n;
   document.getElementById('curr').textContent=current;
   document.getElementById('progress').style.width=(current/total*100)+'%';
@@ -1549,6 +1563,7 @@ function showSlide(n){
   if(window.U2&&CLOUD_SLIDES.includes(n))U2.refreshClouds();
 }
 function nextSlide(){showSlide(current+1)}function prevSlide(){showSlide(current-1)}function goToSlide(n){showSlide(n)}
+function revealStep(){var act=slides[current-1];if(act&&(act.classList.contains('kv-slide')||act.classList.contains('reveal-step'))&&!act.classList.contains('revealed')){act.classList.add('revealed');setTimeout(()=>fitSlide(act),80);return true;}return false;}
 function getFsReq(el){return el.requestFullscreen||el.webkitRequestFullscreen||el.mozRequestFullScreen||el.msRequestFullscreen||null}
 function getFsExit(){return document.exitFullscreen||document.webkitExitFullscreen||document.mozCancelFullScreen||document.msExitFullscreen||null}
 function isFs(){return document.fullscreenElement||document.webkitFullscreenElement||document.mozFullScreenElement||document.msFullscreenElement}
@@ -1559,8 +1574,7 @@ function showToast(m,ms=2500){const t=document.getElementById('toast');t.textCon
 document.addEventListener('keydown',e=>{
   if(e.target&&/INPUT|TEXTAREA/.test(e.target.tagName))return;
   if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){e.preventDefault();
-    var act=slides[current-1];
-    if(act&&act.classList.contains('kv-slide')&&!act.classList.contains('revealed')){act.classList.add('revealed');setTimeout(()=>fitSlide(act),80);return;}
+    if(revealStep())return;
     nextSlide();}
   if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();prevSlide()}
   if(e.key==='f'||e.key==='F'){e.preventDefault();toggleFullscreen()}
