@@ -104,16 +104,15 @@ blockquote{font-family:var(--font-serif);font-style:italic;font-size:clamp(1.5re
 .discuss-step .practice::after{content:var(--card-icon," ");position:absolute;right:.32em;bottom:.14em;font-size:4.6em;opacity:.08;line-height:1;pointer-events:none}
 .discuss-step .practice p,.discuss-step .practice .tmpl,.discuss-step .practice li{font-size:1em;line-height:1.38;position:relative;z-index:1}
 .discuss-step .practice .label{font-size:.5em}
-.discuss-step:not(.revealed) .practice{font-size:clamp(1.06rem,1.4vw,1.34rem);padding:.66em 1.3em}
-.discuss-step.revealed .practice{font-size:clamp(.9rem,1.18vw,1.12rem);padding:.5em 1.1em;box-shadow:0 8px 22px rgba(160,120,30,.13)}
-.discuss-step .tmpl{margin:.2em 0;letter-spacing:.05em;color:var(--color-primary)}
-.discuss-step .reveal-hint{font-size:1.2rem;color:#9a7b1e;font-weight:600}
+.discuss-step:not(.revealed) .practice{font-size:clamp(1.18rem,1.55vw,1.5rem);padding:.78em 1.4em}
+.discuss-step.revealed .practice{font-size:clamp(1rem,1.3vw,1.26rem);padding:.6em 1.2em;box-shadow:0 8px 22px rgba(160,120,30,.13)}
+.discuss-step .tmpl{margin:.22em 0;letter-spacing:.05em;color:var(--color-primary)}
+.discuss-step .reveal-hint{font-size:clamp(1.1rem,1.4vw,1.4rem);color:#9a7b1e;font-weight:600}
 .discuss-step.revealed .reveal-hint{display:none}
-.discuss-step .reveal-after{margin-top:.1em}
-/* tall-card：內容較多的討論頁，僅「未揭曉」時加頂部留白讓標題下移；揭曉後還原(收束句才不會被擠到底部裁掉) */
-.discuss-step.tall-card:not(.revealed){padding-top:9vh}
-.discuss-step .reveal-after .big-q{font-size:clamp(1.5rem,2.4vw,2.15rem);line-height:1.4;margin-top:.15em}
-.discuss-step .reveal-after .muted{font-size:clamp(1.02rem,1.36vw,1.32rem)}
+/* 揭曉的收束＝置中、字夠大、填滿（避免小字＋左對齊＋空盪） */
+.discuss-step .reveal-after{margin-top:.2em;text-align:center}
+.discuss-step .reveal-after .big-q{font-size:clamp(1.9rem,3vw,2.7rem);line-height:1.4;margin-top:.2em;max-width:none}
+.discuss-step .reveal-after .muted{font-size:clamp(1.18rem,1.58vw,1.52rem);max-width:44em;margin-left:auto;margin-right:auto}
 /* 各主題標題頁（本日章節總覽） */
 .toc-themes{list-style:none;max-width:none;width:100%;margin:.5em 0 0;padding:0}
 .toc-themes li{display:flex;align-items:baseline;gap:.8em;padding:.46em .2em;border-bottom:1px dashed var(--color-line);font-size:clamp(1.15rem,1.75vw,1.6rem);line-height:1.4}
@@ -1160,7 +1159,7 @@ body.no-clickzones .click-zones{display:none}
 </section>
 
 <!-- 人生畢業禮（建構式：先討論，按鍵後揭曉收束） -->
-<section class="slide roomy reveal-step discuss-step tall-card" style="--card-icon:'🎓'">
+<section class="slide roomy reveal-step discuss-step" style="--card-icon:'🎓'">
   <h2><span class="cap">🎓</span>體驗活動：人生畢業禮<span class="ul"></span></h2>
   <div class="practice" style="max-width:64rem;margin-left:auto;margin-right:auto">
     <span class="label">書寫＋互讀</span>
