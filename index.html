@@ -244,7 +244,9 @@ table.tbl tr.hl .lv{color:var(--color-primary);font-weight:900;-webkit-text-stro
 .vote-bars{display:flex;align-items:flex-end;justify-content:center;gap:3vw;flex:1;min-height:0;height:100%;padding:1em 1em 0}
 .vbar{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;flex:1;max-width:230px}
 .vbar .vcount{font-family:var(--font-serif);font-weight:900;font-size:clamp(2rem,3.4vw,3.4rem);color:var(--c);line-height:1;margin-bottom:.12em}
-.vbar .vfill{width:78%;background:linear-gradient(180deg,var(--c),color-mix(in srgb,var(--c) 70%,#000));border-radius:14px 14px 0 0;box-shadow:var(--shadow-strong);height:0;transition:height .7s cubic-bezier(.2,.8,.2,1);min-height:4px}
+.vbar .vfill{width:78%;background:linear-gradient(180deg,var(--c),color-mix(in srgb,var(--c) 70%,#000));border-radius:14px 14px 0 0;box-shadow:var(--shadow-strong);height:0;transition:height .7s cubic-bezier(.2,.8,.2,1);min-height:12px}
+.vbar::before{content:"";position:absolute;bottom:2.6em;left:50%;transform:translateX(-50%);width:78%;height:62%;background:rgba(94,26,35,.06);border-radius:14px 14px 0 0;z-index:0}
+.vbar{position:relative}.vbar .vfill,.vbar .vcount,.vbar .vpct,.vbar .vlabel,.vbar .vsub{position:relative;z-index:1}
 .vbar .vlabel{margin-top:.45em;font-family:var(--font-serif);font-weight:700;font-size:clamp(1.2rem,1.7vw,1.7rem);color:var(--color-text)}
 .vbar .vsub{font-size:clamp(.85rem,1.05vw,1rem);color:var(--color-muted)}
 .vbar .vpct{font-size:clamp(1rem,1.3vw,1.25rem);color:var(--c);font-weight:700}
@@ -1248,26 +1250,24 @@ body.no-clickzones .click-zones{display:none}
   </div>
 </section>
 
-<section class="slide roomy">
-  <h2>先讓學員討論：生命意義問題</h2>
-  <p class="lead">承接四大面向 ③④，靈修小組討論一題——</p>
-  <blockquote style="max-width:none"><b>「生命『中』的意義」</b>（我覺得活著值得、有連結感）<br>和 <b>「生命『本身』的意義」</b>（宇宙／人生整體究竟有沒有意義），<br>是同一回事嗎？<br><b>你覺得後者這個問題，問得通嗎？</b></blockquote>
-  <p class="muted">小組討論約 10 分鐘 → 各組一句話回饋。先不評論，讓張力浮現——這正是下午「兩種意義之辯」的入口。</p>
-</section>
-
-<!-- 樂章四開頭互動：牆門投票 -->
+<!-- 牆門投票（重整：意象圖＋QR＋即時長條；原「先讓學員討論」頁已刪） -->
 <section class="slide">
   <h2>死，對你而言比較像牆，還是門？</h2>
-  <div class="vote-stage">
-    <div class="vote-side">
-      <p class="lead">把抽象的意義問題，落到最切身的提問。先<b>每人投一票</b>，理由留到小組討論。</p>
-      <div class="cloud-qr"><div class="qr-box" data-cloud="vote"></div><div class="qr-cap">掃我，投票</div></div>
-      <p class="src">手機開 …/ask.html?p=vote　·　已投 <b><span id="vote-total">0</span></b> 票</p>
-    </div>
-    <div class="vote-bars" id="voteBars">
-      <div class="vbar" style="--c:#6B6B6B"><div class="vcount" id="vc-wall">0</div><div class="vpct" id="vp-wall">0%</div><div class="vfill" id="vf-wall"></div><div class="vlabel">牆</div><div class="vsub">走到盡頭即虛無</div></div>
-      <div class="vbar" style="--c:#A8782E"><div class="vcount" id="vc-door">0</div><div class="vpct" id="vp-door">0%</div><div class="vfill" id="vf-door"></div><div class="vlabel">門</div><div class="vsub">推開另有風光</div></div>
-      <div class="vbar" style="--c:#5C1A23"><div class="vcount" id="vc-unsure">0</div><div class="vpct" id="vp-unsure">0%</div><div class="vfill" id="vf-unsure"></div><div class="vlabel">說不清</div><div class="vsub">還不確定</div></div>
+  <div class="grid2" style="grid-template-columns:.82fr 1.18fr;align-items:stretch;gap:2.8vw;flex:1;min-height:0;margin-top:.3em">
+    <figure style="margin:0;display:flex;flex-direction:column;justify-content:center">
+      <img src="images/death_door_or_wall.jpg" alt="死亡：一堵牆與一扇門的意象" style="max-width:100%;max-height:60vh;object-fit:contain;border-radius:14px;box-shadow:var(--shadow-strong);margin:0 auto">
+      <figcaption class="src" style="text-align:center;max-width:none;margin-top:.5em">同一道界限——左半是實牆的幽暗，右半是微啟之門的暖光。</figcaption>
+    </figure>
+    <div style="display:flex;flex-direction:column;min-height:0">
+      <div style="display:flex;align-items:center;gap:1.3em;margin-bottom:1.6vh">
+        <div class="cloud-qr" style="padding:.55em .6em .45em;flex:none"><div class="qr-box" data-cloud="vote" style="width:clamp(118px,9.2vw,148px);height:clamp(118px,9.2vw,148px)"></div><div class="qr-cap" style="font-size:clamp(.95rem,1.1vw,1.15rem)">掃我，投票</div></div>
+        <div><p class="lead" style="max-width:none;margin:0;text-align:left;font-size:clamp(1.08rem,1.4vw,1.42rem)">先<b>每人投一票</b>，<br>理由留到小組討論。</p><p class="src" style="margin:.5em 0 0">已投 <b><span id="vote-total">0</span></b> 票</p></div>
+      </div>
+      <div class="vote-bars" id="voteBars" style="flex:1;padding-top:0">
+        <div class="vbar" style="--c:#6B6B6B"><div class="vcount" id="vc-wall">0</div><div class="vpct" id="vp-wall">0%</div><div class="vfill" id="vf-wall"></div><div class="vlabel">牆</div><div class="vsub">走到盡頭即虛無</div></div>
+        <div class="vbar" style="--c:#A8782E"><div class="vcount" id="vc-door">0</div><div class="vpct" id="vp-door">0%</div><div class="vfill" id="vf-door"></div><div class="vlabel">門</div><div class="vsub">推開另有風光</div></div>
+        <div class="vbar" style="--c:#5C1A23"><div class="vcount" id="vc-unsure">0</div><div class="vpct" id="vp-unsure">0%</div><div class="vfill" id="vf-unsure"></div><div class="vlabel">不能確定</div><div class="vsub">兩者皆有可能</div></div>
+      </div>
     </div>
   </div>
 </section>
@@ -1275,7 +1275,7 @@ body.no-clickzones .click-zones{display:none}
 <!-- 牆門五組 QR -->
 <section class="slide">
   <h2>各組掃 QR，上傳「組立場＋一句理由」</h2>
-  <p class="lead qr-intro">每組討論彙整<b>一句組立場</b>（牆／門／說不清，加上為什麼），<br>派一位掃自組的碼上傳，投影幕即時呈現五組頁。</p>
+  <p class="lead qr-intro">每組討論彙整<b>一句組立場</b>（牆／門／不能確定，加上為什麼），<br>派一位掃自組的碼上傳，投影幕即時呈現五組頁。</p>
   <div class="qr-stage">
     <div class="qr-card" style="--c:#862633"><div class="qr-box" data-wg="1"></div><div class="qr-cap">第1組<small>組立場</small></div></div>
     <div class="qr-card" style="--c:#A8782E"><div class="qr-box" data-wg="2"></div><div class="qr-cap">第2組<small>組立場</small></div></div>
@@ -1759,7 +1759,7 @@ window.U2=(function(){
     (CLOUDS.dream||[]).forEach(t=>rows.push([ROOM,'美好人生想像雲','全班',t]));
     rows.push([ROOM,'牆門投票','牆','人數 '+VOTE.wall]);
     rows.push([ROOM,'牆門投票','門','人數 '+VOTE.door]);
-    rows.push([ROOM,'牆門投票','說不清','人數 '+VOTE.unsure]);
+    rows.push([ROOM,'牆門投票','不能確定','人數 '+VOTE.unsure]);
     [1,2,3,4,5].forEach(g=>(WG[g]||[]).forEach(t=>rows.push([ROOM,'牆門組立場','第'+g+'組',t])));
     var csv=rows.map(r=>r.map(csvCell).join(',')).join('\r\n');
     var blob=new Blob(['﻿'+csv],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');
