@@ -2778,7 +2778,8 @@ function ccGratShow(t){
           if(wrap&&!wrap.querySelector('.cc-fsbtn')){
             var b=document.createElement('button');b.className='cc-fsbtn';b.type='button';b.title='全螢幕（含中文字幕）';b.textContent='⛶';
             b.onclick=function(e){e.stopPropagation();var w=el.parentElement;
-              if(document.fullscreenElement||document.webkitFullscreenElement){(document.exitFullscreen||document.webkitExitFullscreen).call(document);}
+              var fsEl=document.fullscreenElement||document.webkitFullscreenElement;
+              if(fsEl===w){(document.exitFullscreen||document.webkitExitFullscreen).call(document);}
               else{(w.requestFullscreen||w.webkitRequestFullscreen||function(){}).call(w);}};
             wrap.appendChild(b);
           }
