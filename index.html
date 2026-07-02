@@ -169,6 +169,14 @@ ul.fl li::before{content:"";position:absolute;left:0;top:1.05em;width:.7em;heigh
 .video-wrap{position:relative;z-index:60;width:100%;max-width:560px;aspect-ratio:16/9;border-radius:12px;overflow:hidden;box-shadow:var(--shadow-strong);margin:.3em 0;background:#000}
 .video-wrap iframe{width:100%;height:100%;border:0}
 .video-wrap video{width:100%;height:100%;border:0;display:block;background:#000;object-fit:contain}
+.video-wrap .vfs{position:absolute;bottom:.6em;right:.6em;z-index:66;width:2.3em;height:2.3em;border:none;border-radius:9px;background:rgba(0,0,0,.6);color:#fff;font-size:1.15rem;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;font-family:inherit}
+.video-wrap .vfs:hover{background:rgba(134,38,51,.95)}
+#zoomBackdrop{position:fixed;inset:0;background:rgba(0,0,0,.93);z-index:99990;opacity:0;visibility:hidden;transition:opacity .2s}
+body.has-zoom #zoomBackdrop{opacity:1;visibility:visible}
+.video-wrap.zoom{position:fixed;inset:2vh 2vw;width:auto;height:auto;aspect-ratio:auto;max-width:none;margin:0;z-index:99999;border-radius:12px;box-shadow:0 30px 90px rgba(0,0,0,.7);background:#000}
+.video-wrap.zoom .vfs{width:2.7em;height:2.7em;font-size:1.35rem;bottom:1em;right:1em}
+.video-wrap.zoom .cc-overlay{bottom:8%}
+.video-wrap.zoom .cc-overlay span{font-size:clamp(1.6rem,2.7vw,2.6rem)}
 .cc-overlay{position:absolute;left:3%;right:3%;bottom:16%;z-index:65;text-align:center;pointer-events:none;font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif;font-weight:700;line-height:1.45}
 .cc-overlay span{display:inline;background:rgba(0,0,0,.62);color:#fff;font-size:clamp(.95rem,1.5vw,1.4rem);padding:.12em .5em;border-radius:6px;text-shadow:0 2px 5px rgba(0,0,0,.92);-webkit-box-decoration-break:clone;box-decoration-break:clone}
 /* 自製精簡控制列（取代原生 controls，跨瀏覽器只有一顆全螢幕鈕；全螢幕放大整個影片框＝字幕一起顯示） */
@@ -177,19 +185,9 @@ ul.fl li::before{content:"";position:absolute;left:0;top:1.05em;width:.7em;heigh
 .vctrl .vc-btn:hover{color:var(--color-accent)}
 .vctrl .vc-seek{flex:1;cursor:pointer;height:4px;accent-color:#D4AF37}
 .vctrl .vc-time{color:#fff;font-size:.78rem;min-width:6em;text-align:right;font-variant-numeric:tabular-nums}
-.video-wrap:fullscreen{width:100vw;height:100vh;max-width:none;aspect-ratio:auto;border-radius:0;background:#000}
-.video-wrap:-webkit-full-screen{width:100vw;height:100vh;max-width:none;border-radius:0;background:#000}
-.video-wrap:fullscreen .cc-overlay{bottom:12%}
 .video-wrap:fullscreen .cc-overlay span,.video-wrap:-webkit-full-screen .cc-overlay span{font-size:clamp(1.5rem,3.2vw,2.7rem)}
 /* 自製字幕影片的「全螢幕（含字幕）」鈕：全螢幕化 .video-wrap，字幕層一起放大顯示（YouTube 原生全螢幕鈕已用 fs:0 關閉，避免蓋掉 HTML 字幕層） */
-.cc-fsbtn{position:absolute;top:.5em;right:.5em;z-index:66;width:2em;height:2em;border:none;border-radius:8px;background:rgba(0,0,0,.5);color:#fff;font-size:1.05rem;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:.5;transition:opacity .2s,background .2s}
-.cc-fsbtn:hover{opacity:1;background:rgba(0,0,0,.82)}
-.video-wrap:fullscreen .cc-fsbtn,.video-wrap:-webkit-full-screen .cc-fsbtn{top:1.4em;right:1.4em;width:2.5em;height:2.5em;font-size:1.6rem}
 /* 簡報已在全螢幕時，影片放大改用 CSS 覆蓋（不動用 Fullscreen API），退出只需移除此 class＝仍留在簡報全螢幕 */
-.video-wrap.vfs-cover{position:fixed;inset:0;width:100vw;height:100vh;max-width:none;z-index:9999;border-radius:0;background:#000;margin:0}
-.video-wrap.vfs-cover .cc-overlay{bottom:12%}
-.video-wrap.vfs-cover .cc-overlay span{font-size:clamp(1.5rem,3.2vw,2.7rem)}
-.video-wrap.vfs-cover .cc-fsbtn{top:1.4em;right:1.4em;width:2.5em;height:2.5em;font-size:1.6rem}
 .video-wrap:fullscreen .vctrl .vc-btn{font-size:1.6rem}
 .localvid{display:flex;gap:.7em;align-items:center;background:#fff;border:1px solid var(--color-line);border-left:4px solid var(--color-accent);border-radius:12px;padding:.7em .95em;box-shadow:var(--shadow-soft);margin:.35em 0;max-width:34em}
 /* 圖片大圖 */
@@ -1138,7 +1136,7 @@ body.no-clickzones .click-zones{display:none}
 <section class="slide">
   <h2>面向二：True love 是超越自我中心的愛</h2>
   <div class="grid2" style="grid-template-columns:1.65fr 1fr;align-items:center;gap:2.6vw">
-    <div class="video-wrap" style="width:100%;max-width:100%"><iframe src="https://www.youtube-nocookie.com/embed/p8ky_CnUii0?rel=0&modestbranding=1" title="怎樣才算是真愛 Rabbi Dr. Abraham Twerski" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share" allowfullscreen></iframe></div>
+    <div class="video-wrap" style="width:100%;max-width:100%"><iframe src="https://www.youtube-nocookie.com/embed/p8ky_CnUii0?rel=0&modestbranding=1&fs=0" title="怎樣才算是真愛 Rabbi Dr. Abraham Twerski" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share"></iframe><button class="vfs" title="放大影片（不離開簡報全螢幕）" aria-label="放大影片">⛶</button></div>
     <div>
       <blockquote style="max-width:none;font-size:clamp(1.1rem,1.5vw,1.46rem);line-height:1.6">「你愛魚，所以你把魚抓起來吃掉了——這不是愛魚，這是愛你自己。」</blockquote>
       <p style="font-size:clamp(1.06rem,1.42vw,1.4rem);line-height:1.55">真正的愛，是為了對方的好而付出，不是把對方當成滿足自己的手段。<b>愛賦予意義，愛就是天堂。</b></p>
@@ -1197,7 +1195,7 @@ body.no-clickzones .click-zones{display:none}
 <section class="slide">
   <h2>馬斯克的願景，觸及了死亡與終極意義嗎？</h2>
   <div class="grid2" style="align-items:center;gap:2.4vw">
-    <div class="video-wrap" style="width:100%;max-width:100%"><iframe src="https://www.youtube-nocookie.com/embed/Ba5uOSwH6vk?rel=0&modestbranding=1" title="Elon Musk 論生命意義" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share" allowfullscreen></iframe></div>
+    <div class="video-wrap" style="width:100%;max-width:100%"><iframe src="https://www.youtube-nocookie.com/embed/Ba5uOSwH6vk?rel=0&modestbranding=1&fs=0" title="Elon Musk 論生命意義" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share"></iframe><button class="vfs" title="放大影片（不離開簡報全螢幕）" aria-label="放大影片">⛶</button></div>
     <div>
       <p style="font-size:clamp(1.06rem,1.42vw,1.4rem);line-height:1.55">馬斯克的答覆：<b>永續的未來、多星球物種、走向星際</b>，以及隨之而來的冒險感——讓人對未來充滿興奮與期待，"makes life exciting and worth living"。</p>
       <p style="font-size:clamp(1.06rem,1.42vw,1.4rem);line-height:1.55">這是一種動人的自我超越。但<b>它涉及了「死亡之限」與「生命本身的終極意義」嗎？</b></p>
@@ -1211,7 +1209,7 @@ body.no-clickzones .click-zones{display:none}
 <section class="slide">
   <h2>賈伯斯的最後省思：當生命即將逝去</h2>
   <div class="grid2" style="align-items:center;gap:2.4vw">
-    <div class="video-wrap" style="width:100%;max-width:100%"><iframe src="https://www.youtube-nocookie.com/embed/kITsXjbpy5g?rel=0&modestbranding=1" title="Steve Jobs 最後一段話" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share" allowfullscreen></iframe></div>
+    <div class="video-wrap" style="width:100%;max-width:100%"><iframe src="https://www.youtube-nocookie.com/embed/kITsXjbpy5g?rel=0&modestbranding=1&fs=0" title="Steve Jobs 最後一段話" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share"></iframe><button class="vfs" title="放大影片（不離開簡報全螢幕）" aria-label="放大影片">⛶</button></div>
     <div style="display:flex;flex-direction:column;gap:.78em;font-size:clamp(1.14rem,1.5vw,1.46rem);line-height:1.66">
       <p style="margin:0">躺上病床，他一生引以為傲的財富與名聲，此刻都已黯淡——再昂貴的病床換不回健康，積攢一生的財富也帶不走。</p>
       <p style="margin:0">以死亡為參照，他看清：一味追逐錢財其實很愚蠢，<b>真正值得珍惜的，是健康、愛與關係</b>。</p>
@@ -1266,7 +1264,7 @@ body.no-clickzones .click-zones{display:none}
   <h2 class="s67-h-before">安鈞璨參與《康熙來了》</h2>
   <h2 class="s67-h-after">人生無常，意義何在？</h2>
   <div class="s67-stage">
-    <div class="s67-vid"><div class="video-wrap"><iframe src="https://www.youtube-nocookie.com/embed/MaWdPppw35w?rel=0&modestbranding=1" title="安鈞璨" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share" allowfullscreen></iframe></div></div>
+    <div class="s67-vid"><div class="video-wrap"><iframe src="https://www.youtube-nocookie.com/embed/MaWdPppw35w?rel=0&modestbranding=1&fs=0" title="安鈞璨" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share"></iframe><button class="vfs" title="放大影片（不離開簡報全螢幕）" aria-label="放大影片">⛶</button></div></div>
     <div class="s67-txt">
       <p class="lead" style="max-width:none">歌手<b>安鈞璨</b>，31 歲確診肝癌、兩週後離世。他生前最後的錄影問：<b>「會不會有人記得我？」、「活著到底有什麼意義？」</b></p>
     </div>
@@ -1500,7 +1498,7 @@ body.no-clickzones .click-zones{display:none}
 <section class="slide">
   <h2>理性的盡頭，轉向「超越」的信念</h2>
   <div class="grid2" style="grid-template-columns:1.25fr 1fr;align-items:center;gap:2.6vw">
-    <div class="video-wrap" style="width:100%;max-width:100%"><iframe src="https://www.youtube-nocookie.com/embed/Dr4xmKtCjIs?rel=0&modestbranding=1" title="Jordan Peterson" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share" allowfullscreen></iframe></div>
+    <div class="video-wrap" style="width:100%;max-width:100%"><iframe src="https://www.youtube-nocookie.com/embed/Dr4xmKtCjIs?rel=0&modestbranding=1&fs=0" title="Jordan Peterson" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share"></iframe><button class="vfs" title="放大影片（不離開簡報全螢幕）" aria-label="放大影片">⛶</button></div>
     <div>
       <p class="lead" style="max-width:none"><b>Jordan Peterson</b>：痛苦與荒謬是<b>真實</b>的，不容否認；但<b>愛與真理</b>，有可能穿越痛苦與荒謬，把人帶向超越虛無的盼望。</p>
       <p class="muted">當理性走到盡頭、無法肯定生命本身的意義，人並非別無選擇——他可以在「<b>終極信念</b>」上，向超越者敞開。</p>
@@ -1512,7 +1510,7 @@ body.no-clickzones .click-zones{display:none}
 <section class="slide">
   <h2>人生不只是追求幸福而已<span style="font-size:.42em;font-weight:400;color:#8a7a6a;display:block;margin-top:.25em">There's more to life than being happy ｜ Emily Esfahani Smith ｜ TED</span></h2>
   <div class="grid2" style="grid-template-columns:1.25fr 1fr;align-items:center;gap:2.6vw">
-    <div class="video-wrap" style="width:100%;max-width:100%"><iframe src="https://www.youtube-nocookie.com/embed/y9Trdafp83U?rel=0&modestbranding=1" title="Emily Esfahani Smith | TED" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share" allowfullscreen></iframe></div>
+    <div class="video-wrap" style="width:100%;max-width:100%"><iframe src="https://www.youtube-nocookie.com/embed/y9Trdafp83U?rel=0&modestbranding=1&fs=0" title="Emily Esfahani Smith | TED" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share"></iframe><button class="vfs" title="放大影片（不離開簡報全螢幕）" aria-label="放大影片">⛶</button></div>
     <div>
       <p class="lead" style="max-width:none">生命意義在於<b>服務超越自我的事物</b>，並透過自我超越活出最好的自己——<b>而非只是追求幸福</b>。</p>
       <p style="max-width:none">意義的<b>四大支柱</b>：歸屬感、服務他人的目的、超越感（感受到更宏大的存在）、敘事（透過講述自己的故事來賦予意義）。</p>
@@ -1693,6 +1691,7 @@ document.getElementById('total').textContent=total;
 slides.forEach(s=>{const fw=document.createElement('div');fw.className='fitwrap';while(s.firstChild)fw.appendChild(s.firstChild);s.appendChild(fw);});
 function fitSlide(s){
   const fw=s.firstElementChild;if(!fw||!fw.classList.contains('fitwrap'))return;
+  if(fw.querySelector('.video-wrap.zoom'))return; // 影片放大中：勿動這頁縮放，以免綁架放大定位
   fw.style.transform='none';
   const cs=getComputedStyle(s);
   const availW=s.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);
@@ -1729,6 +1728,7 @@ slides.forEach((s,i)=>{if(s.classList.contains('cover')||s.classList.contains('c
 const CLOUD_SLIDES=[];
 slides.forEach((s,i)=>{if(s.querySelector('.cloud-canvas-wrap canvas'))CLOUD_SLIDES.push(i+1);});
 function showSlide(n){
+  if(window.__exitVideoZoom)window.__exitVideoZoom();
   if(n<1)n=1;if(n>total)n=total;
   slides.forEach((s,i)=>{s.classList.remove('active','prev');if(i+1===n)s.classList.add('active');else if(i+1<n)s.classList.add('prev');});
   slides.forEach(s=>{if(s.classList.contains('kv-slide')||s.classList.contains('reveal-step'))s.classList.remove('revealed');});
@@ -2007,11 +2007,7 @@ function ccEulogyShow(t){
   seek.addEventListener('input',function(e){e.stopPropagation();if(v.duration&&isFinite(v.duration)){v.currentTime=seek.value/1000*v.duration;}});
   seek.addEventListener('click',function(e){e.stopPropagation();});
   fsBtn.addEventListener('click',function(e){e.stopPropagation();
-    var fsEl=document.fullscreenElement||document.webkitFullscreenElement;
-    if(fsEl){ (document.exitFullscreen||document.webkitExitFullscreen||function(){}).call(document); return; }
-    var w=v.closest('.video-wrap');
-    var r=w.requestFullscreen||w.webkitRequestFullscreen||w.msRequestFullscreen;
-    if(r){ try{ r.call(w); }catch(_){} }
+    if(window.__videoZoomToggle)window.__videoZoomToggle(v.closest('.video-wrap'));
   });
 })();
 </script>
@@ -2149,11 +2145,7 @@ function ccGratShow(t){
   seek.addEventListener('input',function(e){e.stopPropagation();if(v.duration&&isFinite(v.duration)){v.currentTime=seek.value/1000*v.duration;}});
   seek.addEventListener('click',function(e){e.stopPropagation();});
   fsBtn.addEventListener('click',function(e){e.stopPropagation();
-    var fsEl=document.fullscreenElement||document.webkitFullscreenElement;
-    if(fsEl){ (document.exitFullscreen||document.webkitExitFullscreen||function(){}).call(document); return; }
-    var w=v.closest('.video-wrap');
-    var r=w.requestFullscreen||w.webkitRequestFullscreen||w.msRequestFullscreen;
-    if(r){ try{ r.call(w); }catch(_){} }
+    if(window.__videoZoomToggle)window.__videoZoomToggle(v.closest('.video-wrap'));
   });
 })();
 </script>
@@ -3029,34 +3021,50 @@ function ccGratShow(t){
         events:{onReady:function(){
           setInterval(function(){show(id);},250);
           var el=document.getElementById(cfg.el);var wrap=el?el.parentElement:null;
-          if(wrap&&!wrap.querySelector('.cc-fsbtn')){
-            var b=document.createElement('button');b.className='cc-fsbtn';b.type='button';b.title='全螢幕（含中文字幕）';b.textContent='⛶';
-            b.onclick=function(e){e.stopPropagation();var w=el.parentElement;
-              var fsEl=document.fullscreenElement||document.webkitFullscreenElement;
-              if(w.classList.contains('vfs-cover')){w.classList.remove('vfs-cover');return;}
-              if(fsEl===w){(document.exitFullscreen||document.webkitExitFullscreen).call(document);return;}
-              if(fsEl===document.documentElement){w.classList.add('vfs-cover');}
-              else{(w.requestFullscreen||w.webkitRequestFullscreen||function(){}).call(w);}};
+          if(wrap&&!wrap.querySelector('.vfs')){
+            var b=document.createElement('button');b.className='vfs';b.type='button';b.title='放大影片（不離開簡報全螢幕）';b.textContent='⛶';
+            b.onclick=function(e){e.stopPropagation();if(window.__videoZoomToggle)window.__videoZoomToggle(el.parentElement);};
             wrap.appendChild(b);
           }
         }}});
     });
   };
-  // 按 Esc 會強制退出瀏覽器全螢幕（無法攔截、Chrome 又不支援巢狀全螢幕）：
-  // 若退出當下還有影片 CSS 覆蓋（vfs-cover），就清掉覆蓋，並盡力重回簡報全螢幕（瀏覽器允許才成）。
-  function onFsExit(){
-    if(document.fullscreenElement||document.webkitFullscreenElement)return;
-    var covers=document.querySelectorAll('.video-wrap.vfs-cover');
-    if(!covers.length)return;
-    covers.forEach(function(c){c.classList.remove('vfs-cover');});
-    var de=document.documentElement;
-    try{var p=(de.requestFullscreen||de.webkitRequestFullscreen||function(){}).call(de);if(p&&p.catch)p.catch(function(){});}catch(e){}
-  }
-  document.addEventListener('fullscreenchange',onFsExit);
-  document.addEventListener('webkitfullscreenchange',onFsExit);
   var sc=document.createElement('script');sc.src='https://www.youtube.com/iframe_api';document.head.appendChild(sc);
 })();
 </script>
 
+<!-- ===================== 影片就地放大（同一 iframe/video 切 CSS class；播放不中斷、不重頭、不停止）===================== -->
+<div id="zoomBackdrop"></div>
+<script>
+(function(){
+  var backdrop=document.getElementById('zoomBackdrop');
+  function zoomed(){return document.querySelector('.video-wrap.zoom');}
+  function enter(w){
+    var fw=w.closest('.fitwrap'), sl=w.closest('.slide');
+    if(fw){fw.dataset.savedT=fw.style.transform||'';fw.style.transform='none';
+           fw.dataset.savedZ=fw.style.zIndex||'';fw.style.zIndex='auto';}
+    if(sl){sl.dataset.savedT=sl.style.transform||'';sl.style.transform='none';}
+    w.classList.add('zoom');document.body.classList.add('has-zoom');
+    var b=w.querySelector('.vfs');if(b)b.textContent='✕';
+  }
+  function exit(){
+    var w=zoomed();document.body.classList.remove('has-zoom');
+    if(!w)return;
+    var fw=w.closest('.fitwrap'), sl=w.closest('.slide');
+    w.classList.remove('zoom');
+    if(fw){fw.style.transform=fw.dataset.savedT||'';fw.style.zIndex=fw.dataset.savedZ||'';}
+    if(sl)sl.style.transform=sl.dataset.savedT||'';
+    var b=w.querySelector('.vfs');if(b)b.textContent='⛶';
+    if(window.fitAll)fitAll();
+  }
+  function toggle(w){if(w.classList.contains('zoom')){exit();}else{var c=zoomed();if(c&&c!==w)exit();enter(w);}}
+  window.__exitVideoZoom=exit; window.__videoZoomToggle=toggle;
+  document.querySelectorAll('.video-wrap .vfs').forEach(function(b){
+    b.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();toggle(b.closest('.video-wrap'));});
+  });
+  if(backdrop)backdrop.addEventListener('click',function(e){e.stopPropagation();exit();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&zoomed()){e.stopPropagation();exit();}},true);
+})();
+</script>
 </body>
 </html>
