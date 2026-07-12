@@ -1852,9 +1852,9 @@ window.U2=(function(){
       firebase.initializeApp(window.FB_CONFIG);
       root=firebase.database().ref('rooms/'+ROOM);
       // 序曲五組
-      [1,2,3,4,5].forEach(g=>root.child('prologue/g'+g).on('value',s=>{PRO[g]=listify(s.val()||{});renderPro(g);}));
+      [1,2,3,4,5,6].forEach(g=>root.child('prologue/g'+g).on('value',s=>{PRO[g]=listify(s.val()||{});renderPro(g);}));
       // 牆門五組
-      [1,2,3,4,5].forEach(g=>root.child('walldoor/g'+g).on('value',s=>{WG[g]=listify(s.val()||{});renderWG(g);}));
+      [1,2,3,4,5,6].forEach(g=>root.child('walldoor/g'+g).on('value',s=>{WG[g]=listify(s.val()||{});renderWG(g);}));
       // 文字雲
       ['question','dream'].forEach(p=>root.child('clouds/'+p).on('value',s=>{CLOUDS[p]=listify(s.val()||{});renderCloud(p);}));
       // 投票
@@ -1967,13 +1967,13 @@ window.U2=(function(){
   function csvCell(s){return '"'+String(s==null?'':s).replace(/"/g,'""')+'"';}
   function downloadCSV(stamp){
     var rows=[['房號','區段','組別/選項','內容']];
-    [1,2,3,4,5].forEach(g=>(PRO[g]||[]).forEach(t=>rows.push([ROOM,'序曲精華','第'+g+'組',t])));
+    [1,2,3,4,5,6].forEach(g=>(PRO[g]||[]).forEach(t=>rows.push([ROOM,'序曲精華','第'+g+'組',t])));
     (CLOUDS.question||[]).forEach(t=>rows.push([ROOM,'人生問題雲','全班',t]));
     (CLOUDS.dream||[]).forEach(t=>rows.push([ROOM,'美好人生想像雲','全班',t]));
     rows.push([ROOM,'牆門投票','牆','人數 '+VOTE.wall]);
     rows.push([ROOM,'牆門投票','門','人數 '+VOTE.door]);
     rows.push([ROOM,'牆門投票','不能確定','人數 '+VOTE.unsure]);
-    [1,2,3,4,5].forEach(g=>(WG[g]||[]).forEach(t=>rows.push([ROOM,'牆門組立場','第'+g+'組',t])));
+    [1,2,3,4,5,6].forEach(g=>(WG[g]||[]).forEach(t=>rows.push([ROOM,'牆門組立場','第'+g+'組',t])));
     var csv=rows.map(r=>r.map(csvCell).join(',')).join('\r\n');
     var blob=new Blob(['﻿'+csv],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');
     a.href=url;a.download='單元二終極關懷_'+ROOM+'_'+stamp+'.csv';document.body.appendChild(a);a.click();a.remove();
@@ -1988,14 +1988,14 @@ window.U2=(function(){
         var val=snap.val(),fin=()=>{root.remove();showToast('已下載 CSV＋雲端封存，並清空本場',3000);};
         if(val){firebase.database().ref('rooms/_archives/'+ROOM+'__'+stamp).set(val).then(fin,fin);}else fin();
       });
-    }else{PRO={1:[],2:[],3:[],4:[],5:[]};WG={1:[],2:[],3:[],4:[],5:[]};CLOUDS={question:[],dream:[]};saveLocal();[1,2,3,4,5].forEach(g=>{renderPro(g);renderWG(g);});refreshClouds();showToast('已下載 CSV 並清空本場（本機）',3000);}
+    }else{PRO={1:[],2:[],3:[],4:[],5:[],6:[]};WG={1:[],2:[],3:[],4:[],5:[],6:[]};CLOUDS={question:[],dream:[]};saveLocal();[1,2,3,4,5,6].forEach(g=>{renderPro(g);renderWG(g);});refreshClouds();showToast('已下載 CSV 並清空本場（本機）',3000);}
   }
 
   function initAll(){
     document.querySelectorAll('.daiuda input').forEach(inp=>inp.addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Enter'){const row=inp.closest('.daiuda');row.hasAttribute('data-pg')?dai(row):daiW(row);}}));
     document.addEventListener('keydown',e=>{if(!e.shiftKey)return;if(e.key==='C'||e.key==='c'){e.preventDefault();clearCurrent();}else if(e.key==='E'||e.key==='e'){e.preventDefault();exportAndClear();}});
     if(!initFB())loadLocal();
-    [1,2,3,4,5].forEach(g=>{renderPro(g);renderWG(g);});
+    [1,2,3,4,5,6].forEach(g=>{renderPro(g);renderWG(g);});
     refreshClouds(); renderVote(); makeQRs(); setStatus();
   }
   if(document.readyState!=='loading')initAll();else document.addEventListener('DOMContentLoaded',initAll);
