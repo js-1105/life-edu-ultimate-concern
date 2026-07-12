@@ -48,14 +48,14 @@ button.send:active{transform:translateY(1px);opacity:.9}
 <div class="flash" id="flash"></div>
 <script>
 (function(){
-  // 六組＝第1–5組靈修小組＋第6組綜合組。round=prologue（序曲）或 walldoor（樂章四 牆/門）。
+  // 六組＝現場隨機分組（不綁靈修小組）。round=prologue（序曲）或 walldoor（樂章四 牆/門）。
   var GROUPS={1:{c:'#862633'},2:{c:'#A8782E'},3:{c:'#1E5F74'},4:{c:'#6B5635'},5:{c:'#5C1A23'},6:{c:'#C47830'}};
   var p=new URLSearchParams(location.search);
   var g=(p.get('g')||'1').replace(/[^1-6]/g,'')||'1';
   var round=(p.get('r')==='walldoor')?'walldoor':'prologue';
   var C=GROUPS[g].c;
   document.documentElement.style.setProperty('--c',C);
-  document.getElementById('gName').textContent='第 '+g+' 組（'+(g==='6'?'綜合組':'靈修小組')+'）';
+  document.getElementById('gName').textContent='第 '+g+' 組';
   if(round==='walldoor'){
     document.getElementById('gSub').textContent='死亡是牆還是門？把組立場打上來';
     document.getElementById('introTxt').innerHTML='你們這一組討論「死亡比較像牆、像門、還是說不清？」，把<b>組立場＋一句理由</b>寫下來，送出後即時出現在投影幕你們這一組的頁面。';
