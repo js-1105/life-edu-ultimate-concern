@@ -1822,9 +1822,29 @@ function enterFs(el){const r=getFsReq(el);if(!r){showToast('此瀏覽器不支�
 function toggleFullscreen(){if(isFs()){const x=getFsExit();if(x)x.call(document);return}enterFs(document.documentElement).catch(()=>{showToast(window.self!==window.top?'預覽面板內無法全螢幕，請在新分頁開啟':'無法進入全螢幕，請按 F11',4500)})}
 function startPresentation(){toggleFullscreen()} // 封面大鈕＝純全螢幕toggle，絕不翻頁（教授2026-07-03鐵則）
 function showToast(m,ms=2500){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),ms)}
+// ===== Space 鍵：滑鼠在影音框(.video-wrap/.vframe)內＝播放/暫停該片、不翻頁；框外＝維持翻頁（六單元通用）=====
+let __spaceMx=0,__spaceMy=0;
+document.addEventListener('mousemove',e=>{__spaceMx=e.clientX;__spaceMy=e.clientY;},{passive:true});
+function toggleVideoInFocus(){
+  const el=document.elementFromPoint(__spaceMx,__spaceMy);
+  const vc=el&&el.closest?el.closest('.video-wrap,.vframe'):null;
+  if(!vc)return false; // 不在影音框內，回傳 false 讓呼叫端執行 nextSlide()
+  const vid=vc.querySelector('video');
+  if(vid){ if(vid.paused)vid.play();else vid.pause(); return true; }
+  const yt=vc._ytPlayer;
+  if(yt&&typeof yt.getPlayerState==='function'){
+    try{ const state=yt.getPlayerState(); if(state===1)yt.pauseVideo();else yt.playVideo(); }catch(_){}
+    return true;
+  }
+  return true; // 在影音框內但無 API（純 iframe），仍阻止跳頁，不強行 nextSlide
+}
 document.addEventListener('keydown',e=>{
   if(e.target&&/INPUT|TEXTAREA/.test(e.target.tagName))return;
-  if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){e.preventDefault();
+  if(e.key==='ArrowRight'||e.key==='PageDown'){e.preventDefault();
+    if(revealStep())return;
+    nextSlide();}
+  if(e.key===' '){e.preventDefault();
+    if(toggleVideoInFocus())return;
     if(revealStep())return;
     nextSlide();}
   if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();prevSlide()}
@@ -3239,6 +3259,7 @@ function ccGratShow(t){
         host:'https://www.youtube-nocookie.com',
         playerVars:{rel:0,modestbranding:1,playsinline:1,fs:0},
         events:{onReady:function(){
+          try{var __ifr=document.getElementById(id);var __vw=__ifr&&__ifr.closest?__ifr.closest('.video-wrap,.vframe'):null;if(__vw)__vw._ytPlayer=cfg._p;}catch(_){}
           setInterval(function(){show(id);},250);
           var el=document.getElementById(cfg.el);var wrap=el?el.parentElement:null;
           if(wrap&&!wrap.querySelector('.vfs')){
