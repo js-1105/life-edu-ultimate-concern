@@ -231,8 +231,8 @@ table.tbl tr.hl .lv{color:var(--color-primary);font-weight:900;-webkit-text-stro
 .cloud-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--color-muted);font-style:italic;font-size:clamp(1.1rem,1.4vw,1.4rem);text-align:center;padding:0 1em}
 /* 八組 QR 頁 */
 .qr-intro{text-align:center;max-width:none;margin:.25em auto .55em;font-size:clamp(1.4rem,2vw,1.95rem);line-height:1.5;color:var(--color-text)}
-.qr-stage{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:1fr;gap:.5vh 1.3vw;align-content:center;justify-items:center;flex:1;min-height:0;width:100%}
-.qr-card{width:100%;max-width:255px;background:#fff;border-radius:14px;border-top:6px solid var(--c,#862633);box-shadow:var(--shadow-strong);padding:.3em .55em .35em;display:flex;flex-direction:column;align-items:center;gap:.2em}
+.qr-stage{display:grid;grid-template-columns:repeat(4,auto);grid-auto-rows:1fr;justify-content:center;align-content:center;column-gap:2.2vw;row-gap:.5vh;flex:1;min-height:0;width:100%}
+.qr-card{width:255px;max-width:255px;background:#fff;border-radius:14px;border-top:6px solid var(--c,#862633);box-shadow:var(--shadow-strong);padding:.3em .55em .35em;display:flex;flex-direction:column;align-items:center;gap:.2em}
 .qr-box{width:100%;max-width:min(18.5vw,19.5vh);aspect-ratio:1;background:#fff;display:flex;align-items:center;justify-content:center}
 .qr-box img,.qr-box canvas{width:100%!important;height:100%!important;display:block}
 .qr-cap{font-family:var(--font-serif);font-weight:900;color:var(--c,#862633);font-size:clamp(1rem,1.35vw,1.3rem);text-align:center;line-height:1.0}
@@ -1955,6 +1955,29 @@ window.U2=(function(){
     document.querySelectorAll('.qr-box[data-wg]').forEach(b=>{const g=b.getAttribute('data-wg');b.innerHTML='';try{new QRCode(b,{text:SUBMIT+'&r=walldoor&g='+g,width:300,height:300,correctLevel:QRCode.CorrectLevel.M});}catch(e){}});
     document.querySelectorAll('.qr-box[data-cloud]').forEach(b=>{const p=b.getAttribute('data-cloud');b.innerHTML='';try{new QRCode(b,{text:ASK+'&p='+p,width:300,height:300,correctLevel:QRCode.CorrectLevel.M});}catch(e){}});
   }
+  /* ---- QR 卡片動態依容器實際高度置中（避免固定vh在不同螢幕解析度下溢出/擠向上緣，2026-07-13） ---- */
+  function fitQrStages(){
+    document.querySelectorAll('.qr-stage').forEach(stage=>{
+      const cards=stage.querySelectorAll('.qr-card'); if(!cards.length)return;
+      const rows=Math.ceil(cards.length/4);
+      const cs=getComputedStyle(stage);
+      const rowGap=parseFloat(cs.rowGap)||0;
+      const cellH=(stage.clientHeight-rowGap*(rows-1))/rows;
+      const card=cards[0], cardCS=getComputedStyle(card);
+      const padV=parseFloat(cardCS.paddingTop)+parseFloat(cardCS.paddingBottom);
+      const padH=parseFloat(cardCS.paddingLeft)+parseFloat(cardCS.paddingRight);
+      const borderT=parseFloat(cardCS.borderTopWidth)||0;
+      const innerGap=parseFloat(cardCS.rowGap)||0;
+      const capEl=card.querySelector('.qr-cap'); if(!capEl)return;
+      const capH=capEl.getBoundingClientRect().height;
+      const overhead=padV+borderT+innerGap+capH;
+      const cardMaxW=255;
+      const finalSize=Math.max(60,Math.min(cardMaxW-padH,cellH-overhead));
+      stage.querySelectorAll('.qr-box').forEach(b=>{b.style.maxWidth=finalSize+'px';});
+    });
+  }
+  window.addEventListener('resize',fitQrStages);
+  document.addEventListener('fullscreenchange',fitQrStages);
   function setStatus(){const el=document.getElementById('fbStatus');if(!el)return;el.textContent=root?(online?'● 線上（手機投稿即時更新）':'● 連線中…'):'○ 單機代打模式（未連網）';}
 
   /* ---- Shift+C 清空目前頁 / Shift+E 存檔全清 ---- */
@@ -2007,6 +2030,7 @@ window.U2=(function(){
     if(!initFB())loadLocal();
     [1,2,3,4,5,6,7,8].forEach(g=>{renderPro(g);renderWG(g);});
     refreshClouds(); renderVote(); makeQRs(); setStatus();
+    requestAnimationFrame(fitQrStages);
   }
   if(document.readyState!=='loading')initAll();else document.addEventListener('DOMContentLoaded',initAll);
   return {refreshClouds};
